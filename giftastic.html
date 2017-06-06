@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Video Buttons</title>
+
+  <link rel="stylesheet" type="text/css" href="giftastic.css">
+  
+</head>
+
+<body>
+  <button data-video="funny">Funny</button>
+  <button data-video="talk-show">Talk Show</button>
+  <button data-video="viral-videos">Viral Videos</button>
+
+  <div id="gifs-appear-here">
+  </div>
+
+  <script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+  <script type="text/javascript">
+   
+    $("button").on("click", function() {
+      
+      var video = $(this).attr("data-video");
+      
+    
+      var queryURL = "http://api.giphy.com/v1/gifs/search?q=" +
+        video + "&api_key=dc6zaTOxFJmzC&limit=10";
+
+      
+      $.ajax({
+          url: queryURL,
+          method: "GET"
+        })
+        
+        .done(function(response) {
+          console.log(queryURL);
+
+          console.log(response);
+          
+          var results = response.data;
+
+         
+          for (var i = 0; i < results.length; i++) {
+
+            
+            var videoDiv = $("<div>");
+
+            
+            var p = $("<p>").text("Rating: " + results[i].rating);
+
+            
+            var videoImage = $("<img>");
+            
+            videoImage.attr("src", results[i].images.fixed_height.url);
+
+            videoDiv.append(p);
+            videoDiv.append(videoImage);
+
+            
+            $("#gifs-appear-here").prepend(videoDiv);
+
+          }
+
+        });
+  
+    });
+    
+  </script>
+</body>
+
+</html>
